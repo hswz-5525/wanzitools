@@ -24,12 +24,48 @@ SUPPORTED_LANGUAGES = {
 def load_language(lang_code):
     """加载语言配置"""
     try:
+        print(f"Attempting to load language: {lang_code}")  # 添加调试信息
+        print(f"Current working directory: {os.getcwd()}")  # 添加调试信息
+        print(f"Files in languages directory: {os.listdir('languages')}")  # 添加调试信息
+        
         lang_module = importlib.import_module(f'languages.{lang_code}')
-        return lang_module.LANG
-    except ImportError:
+        lang_config = lang_module.LANG
+        
+        # 验证必要的键是否存在
+        required_keys = ['modules', 'compose']
+        for key in required_keys:
+            if key not in lang_config.get('modules', {}):
+                print(f"Warning: Missing key '{key}' in language config")  # 添加调试信息
+        
+        return lang_config
+    except ImportError as e:
+        print(f"ImportError loading language {lang_code}: {e}")  # 添加调试信息
         # 如果找不到语言文件，返回默认语言（中文）
         lang_module = importlib.import_module('languages.zh_CN')
         return lang_module.LANG
+    except Exception as e:
+        print(f"Error loading language {lang_code}: {e}")  # 添加调试信息
+        return {
+            'title': 'WanziTools',
+            'version': 'Version',
+            'modules': {
+                'permission': {
+                    'name': 'File Permission Manager',
+                    'description': 'Manage file permissions'
+                },
+                'docker': {
+                    'name': 'Docker Image Manager',
+                    'description': 'Manage Docker images'
+                },
+                'compose': {
+                    'name': 'Compose Project Manager',
+                    'description': 'Manage Docker Compose projects'
+                }
+            },
+            'navigation': {
+                'home': 'Home'
+            }
+        }
 
 @app.template_filter('datetime')
 def format_datetime(timestamp):
