@@ -1,0 +1,2185 @@
+{% extends "base.html" %}
+
+{% block title %}Compose项目管理{% endblock %}
+
+{% block extra_style %}
+<style>
+    .project-list {
+        margin: 20px 0;
+    }
+
+    .project-item {
+        background: white;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .project-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .project-header:hover {
+        background-color: #f8f9fa;
+    }
+
+    .project-name {
+        flex: 1;
+        font-weight: 500;
+        font-size: 1.1em;
+    }
+
+    .project-status {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        margin-left: 10px;
+    }
+
+    .status-running {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-stopped {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-unknown {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+
+    .project-content {
+        display: none;
+        padding: 15px;
+    }
+
+    .project-content.active {
+        display: block;
+    }
+
+    .file-editor {
+        margin-bottom: 15px;
+    }
+
+    .file-editor textarea {
+        width: 100%;
+        min-height: 300px;
+        font-family: monospace;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .editor-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .toolbar {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .deploy-btn {
+        background-color: #28a745;
+        color: white !important;
+    }
+
+    .deploy-btn:hover {
+        background-color: #218838;
+    }
+
+    .stop-btn {
+        background-color: #dc3545;
+        color: white !important;
+    }
+
+    .stop-btn:hover {
+        background-color: #c82333;
+    }
+
+    .save-btn {
+        background-color: #17a2b8;
+        color: white !important;
+    }
+
+    .save-btn:hover {
+        background-color: #138496;
+    }
+
+    button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s;
+    }
+
+    button i {
+        font-size: 1.1em;
+    }
+
+    button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .version-info {
+        text-align: right;
+        color: #666;
+        font-size: 0.8em;
+        margin-bottom: 20px;
+        padding: 5px 10px;
+    }
+
+    .version-info span {
+        background-color: #f8f9fa;
+        padding: 3px 8px;
+        border-radius: 4px;
+        border: 1px solid #eee;
+    }
+
+    .project-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .project-containers,
+    .project-created {
+        color: #666;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+
+    .project-containers i,
+    .project-created i {
+        margin-right: 5px;
+    }
+
+    .logs-container {
+        max-height: 400px;
+        overflow-y: auto;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 15px 0;
+    }
+
+    .logs-container pre {
+        margin: 0;
+        white-space: pre-wrap;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .project-actions {
+        display: flex;
+        gap: 8px;
+        margin-left: 15px;
+    }
+
+    .action-btn {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .start-btn {
+        background-color: #27ae60;
+        color: white;
+    }
+
+    .stop-btn {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .edit-btn {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: white;
+        margin: 50px auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 800px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .close-btn:hover {
+        color: #333;
+    }
+
+    .btn-text {
+        margin-left: 5px;
+        display: none;
+    }
+
+    .action-btn:hover .btn-text {
+        display: inline;
+    }
+
+    .project-actions button {
+        min-width: 32px;
+        transition: min-width 0.3s;
+    }
+
+    .project-actions button:hover {
+        min-width: 80px;
+    }
+
+    .root-path-setting {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+    }
+
+    .root-path-setting .form-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .root-path-setting label {
+        white-space: nowrap;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .root-path-setting input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        min-width: 200px;
+    }
+
+    .root-path-setting button {
+        padding: 8px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .root-path-setting button:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    .project-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+
+    .action-btn span {
+        display: inline;
+        white-space: nowrap;
+    }
+
+    .delete-project-list {
+        margin: 15px 0;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .delete-project-item {
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .delete-project-item:last-child {
+        border-bottom: none;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: white;
+        margin: 50px auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: #333;
+    }
+
+    .modal-body {
+        margin-bottom: 20px;
+    }
+
+    .delete-project-list {
+        margin: 15px 0;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .delete-project-item {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .delete-project-item:last-child {
+        border-bottom: none;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .modal-buttons button {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .modal-buttons button:first-child {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .modal-buttons button:first-child:hover {
+        background-color: #5a6268;
+    }
+
+    .modal-buttons .delete-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .modal-buttons .delete-btn:hover {
+        background-color: #c82333;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 4px;
+        background-color: #f0f0f0;
+        border-radius: 2px;
+        margin: 10px 0;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0;
+        background-color: #3498db;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        text-align: center;
+        color: #666;
+        font-size: 0.9em;
+        margin: 5px 0;
+    }
+
+    #deploy-logs {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .clean-btn {
+        background-color: #f39c12;
+        color: white;
+    }
+
+    .clean-btn:hover {
+        background-color: #d68910;
+    }
+
+    .tab-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .tab-btn {
+        padding: 5px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: none;
+        cursor: pointer;
+    }
+
+    .tab-btn.active {
+        background-color: #3498db;
+        color: white;
+        border-color: #3498db;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .tab-content textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+    }
+
+    .tab-content input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    .help-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .add-btn {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+    .add-btn:hover {
+        background-color: #27ae60;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+
+    .test-btn {
+        background-color: #17a2b8;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .test-result {
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 4px;
+        display: none;
+    }
+
+    .test-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .test-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .config-form {
+        margin: 20px 0;
+    }
+
+    .config-form select,
+    .config-form input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .current-registry-list {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-family: monospace;
+    }
+
+    .current-registry-item {
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .current-registry-item:last-child {
+        border-bottom: none;
+    }
+
+    .no-registry {
+        color: #666;
+        font-style: italic;
+    }
+
+    .registry-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .registry-input-group input {
+        flex: 1;
+    }
+
+    .remove-registry {
+        background: none;
+        border: none;
+        color: #e74c3c;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .remove-registry:hover {
+        color: #c0392b;
+    }
+
+    .add-registry-btn {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .add-registry-btn:hover {
+        background-color: #27ae60;
+    }
+
+    .convert-btn {
+        background-color: #9b59b6;
+        color: white;
+    }
+
+    .convert-btn:hover {
+        background-color: #8e44ad;
+    }
+
+    .tab-content textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    .tab-content textarea[readonly] {
+        background-color: #f8f9fa;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+    }
+
+    /* 对话框基本样式 */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: white;
+        margin: 30px auto;
+        padding: 25px;
+        width: 90%;
+        max-width: 800px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.5em;
+        color: #2c3e50;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+        padding: 5px;
+        line-height: 1;
+        transition: all 0.2s;
+    }
+
+    .close-btn:hover {
+        color: #333;
+        transform: scale(1.1);
+    }
+
+    .modal-body {
+        margin-bottom: 25px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .modal-buttons button {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .modal-buttons button:first-child {
+        background-color: #f8f9fa;
+        color: #495057;
+        border: 1px solid #ddd;
+    }
+
+    .modal-buttons button:first-child:hover {
+        background-color: #e9ecef;
+    }
+
+    .modal-buttons button:last-child {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .modal-buttons button:last-child:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    /* 表单样式 */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+    }
+
+    /* 代码编辑器样式 */
+    .code-editor {
+        font-family: monospace;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        margin: 10px 0;
+    }
+
+    .code-editor textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 1.5;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        resize: vertical;
+        font-family: 'Courier New', Courier, monospace;  /* 使用等宽字体 */
+        white-space: pre;  /* 保持原始格式 */
+        tab-size: 4;  /* 设置制表符宽度 */
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        word-wrap: normal;  /* 防止自动换行 */
+        overflow-x: auto;  /* 添加水平滚动条 */
+    }
+
+    .code-editor textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+    }
+
+    /* 标签切换样式 */
+    .tab-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .tab-btn {
+        padding: 8px 20px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+        background-color: #3498db;
+        color: white;
+        border-color: #3498db;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* 帮助文本样式 */
+    .help-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: vertical;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+    }
+
+    .code-container {
+        position: relative;
+        width: 100%;
+        max-height: 300px;  /* 限制文本框最大高度 */
+    }
+
+    .code-container textarea {
+        width: 100%;
+        max-height: 300px;  /* 限制文本框最大高度 */
+        resize: vertical;  /* 允许垂直调整大小 */
+        min-height: 100px;  /* 设置最小高度 */
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* 修改代码转换对话框的宽度 */
+    #convert-code-modal .modal-content {
+        max-width: 600px;  /* 减小对话框宽度 */
+    }
+
+    #convert-code-modal .modal-body {
+        padding: 15px;
+    }
+
+    #convert-code-modal textarea {
+        width: calc(100% - 20px);  /* 考虑内边距 */
+        margin: 10px;
+    }
+
+    .path-input-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .path-input-group input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .browse-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .browse-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .directory-tree {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+
+    .current-path {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .directory-list {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .directory-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+
+    .directory-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .directory-item.parent {
+        color: #666;
+    }
+
+    .directory-item i {
+        color: #f1c40f;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- 修改根目录设置 -->
+    <div class="root-path-setting">
+        <div class="form-group">
+            <label>{{ lang.compose.root_path.label }}：</label>
+            <div class="path-input-group">
+                <input type="text" id="root-path" value="{{ compose_root }}" placeholder="{{ lang.compose.root_path.placeholder }}">
+                <button type="button" class="browse-btn" onclick="openDirectoryDialog()">
+                    <i class="fas fa-folder-open"></i> {{ lang.compose.root_path.browse }}
+                </button>
+                <button onclick="saveRootPath()">{{ lang.buttons.save }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加文件夹选择对话框 -->
+    <div id="directory-dialog" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.root_path.select_title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('directory-dialog')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="directory-tree">
+                    <div class="current-path">
+                        <i class="fas fa-folder"></i>
+                        <span id="current-path">/</span>
+                    </div>
+                    <div class="directory-list" id="directory-list">
+                        <!-- 目录列表将通过 JavaScript 动态填充 -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('directory-dialog')">{{ lang.buttons.cancel }}</button>
+                <button class="select-btn" onclick="selectDirectory()">{{ lang.compose.root_path.select }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <button onclick="selectAll()">
+            <i class="fas fa-check-square"></i> {{ lang.buttons.select_all }}
+        </button>
+        <button onclick="deselectAll()">
+            <i class="fas fa-square"></i> {{ lang.buttons.deselect_all }}
+        </button>
+        <button onclick="selectNotRunning()">
+            <i class="fas fa-pause"></i> {{ lang.compose.buttons.select_not_running }}
+        </button>
+        <button class="deploy-btn" onclick="deploySelected('up')">
+            <i class="fas fa-play"></i> {{ lang.compose.buttons.start }}
+        </button>
+        <button class="stop-btn" onclick="deploySelected('down')">
+            <i class="fas fa-stop"></i> {{ lang.compose.buttons.stop }}
+        </button>
+        <button class="clean-btn" onclick="cleanupSelected()">
+            <i class="fas fa-broom"></i> {{ lang.compose.buttons.cleanup }}
+        </button>
+        <button class="delete-btn" onclick="deleteSelected()">
+            <i class="fas fa-trash"></i> {{ lang.compose.buttons.delete }}
+        </button>
+        <button class="config-btn" onclick="showConfigModal()">
+            <i class="fas fa-cog"></i> {{ lang.buttons.config }}
+        </button>
+        <button class="add-btn" onclick="showAddProjectModal()">
+            <i class="fas fa-plus"></i> {{ lang.compose.buttons.add_project }}
+        </button>
+        <button class="convert-btn" onclick="showConvertModal()">
+            <i class="fas fa-exchange-alt"></i> {{ lang.compose.buttons.convert_code }}
+        </button>
+    </div>
+
+    <!-- 项目列表 -->
+    <div class="project-list">
+        {% for project in projects %}
+        <div class="project-item">
+            <div class="project-header">
+                <input type="checkbox" class="project-checkbox" value="{{ project.name }}" 
+                       onclick="event.stopPropagation()"
+                       data-status="{{ project.status }}">
+                <span class="project-name">{{ project.name }}</span>
+                <div class="project-info">
+                    <span class="project-containers" title="{{ lang.compose.project.containers }}">
+                        <i class="fas fa-cube"></i> {{ project.running_containers }}/{{ project.container_count }}
+                    </span>
+                    <span class="project-created" title="{{ lang.compose.project.created }}">
+                        <i class="fas fa-clock"></i> {{ project.created_time|datetime }}
+                    </span>
+                    <span class="project-status status-{{ project.status }}">
+                        {{ lang.compose.project.status[project.status] }}
+                    </span>
+                    <div class="project-actions">
+                        <button class="action-btn start-btn" onclick="deployProject('{{ project.name }}', 'up')" 
+                                {% if project.status == 'running' %}disabled{% endif %}>
+                            <i class="fas fa-play"></i>
+                            <span>{{ lang.compose.buttons.start }}</span>
+                        </button>
+                        <button class="action-btn stop-btn" onclick="deployProject('{{ project.name }}', 'down')"
+                                {% if project.status != 'running' %}disabled{% endif %}>
+                            <i class="fas fa-stop"></i>
+                            <span>{{ lang.compose.buttons.stop }}</span>
+                        </button>
+                        <button class="action-btn clean-btn" onclick="cleanupProject('{{ project.name }}')"
+                                title="停止项目并清理关镜像">
+                            <i class="fas fa-broom"></i>
+                            <span>{{ lang.compose.buttons.cleanup }}</span>
+                        </button>
+                        <button class="action-btn edit-btn" onclick="toggleProject('{{ project.name }}')">
+                            <i class="fas fa-edit"></i>
+                            <span>{{ lang.buttons.edit }}</span>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteProject('{{ project.name }}')">
+                            <i class="fas fa-trash"></i>
+                            <span>{{ lang.compose.buttons.delete }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content" id="project-{{ project.name }}">
+                <!-- Compose文件编辑器 -->
+                <div class="file-editor">
+                    <h4>docker-compose.yml</h4>
+                    <textarea id="compose-{{ project.name }}">{{ project.compose_content }}</textarea>
+                    <div class="editor-buttons">
+                        <button class="save-btn" onclick="saveFile('{{ project.name }}', 'compose')">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- .env文件编辑器 -->
+                {% if project.env_content is not none %}
+                <div class="file-editor">
+                    <h4>.env</h4>
+                    <textarea id="env-{{ project.name }}">{{ project.env_content }}</textarea>
+                    <div class="editor-buttons">
+                        <button class="save-btn" onclick="saveFile('{{ project.name }}', 'env')">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 修改部署日志对话框 -->
+    <div id="deploy-logs-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.dialogs.deploy_logs }}</h3>
+                <button class="close-btn" onclick="closeModal('deploy-logs-modal')">×</button>
+            </div>
+            <div class="logs-container">
+                <pre id="deploy-logs"></pre>
+                <div id="deploy-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text">正在部署: <span id="current-project">-</span></p>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="confirmDeploy()" style="display: none;" id="confirm-deploy-btn">{{ lang.buttons.confirm }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改配置对话框 -->
+    <div id="config-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.dialogs.config_title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('config-modal')">×</button>
+            </div>
+            <div class="config-form">
+                <!-- 预设镜像源选择 -->
+                <div class="form-group">
+                    <label>{{ lang.compose.dialogs.preset_registry }}</label>
+                    <select id="preset-registry" onchange="handlePresetChange()">
+                        <option value="">{{ lang.compose.dialogs.custom }}</option>
+                        <option value="https://registry.docker-cn.com">Docker中国区</option>
+                        <option value="https://hub-mirror.c.163.com">网易镜像</option>
+                        <option value="https://mirror.baidubce.com">百度镜像</option>
+                        <option value="https://mirror.ccs.tencentyun.com">腾讯云镜像</option>
+                        <option value="https://registry.cn-hangzhou.aliyuncs.com">阿里云镜像</option>
+                    </select>
+                </div>
+
+                <!-- 自定义镜像源配置 -->
+                <div class="form-group">
+                    <label>{{ lang.compose.dialogs.registry_address }}</label>
+                    <input type="text" id="registry-address" placeholder="{{ lang.compose.dialogs.registry_placeholder }}">
+                </div>
+
+                <!-- 测试连接部分 -->
+                <div class="form-group">
+                    <button type="button" class="test-btn" onclick="testRegistry()">
+                        <i class="fas fa-vial"></i> {{ lang.buttons.test }}
+                    </button>
+                    <div id="test-result" class="test-result"></div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('config-modal')">{{ lang.buttons.cancel }}</button>
+                <button class="config-btn" onclick="saveRegistryConfig()">{{ lang.buttons.save }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改删除确认对话框 -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.dialogs.delete.title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('delete-confirm-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>{{ lang.compose.dialogs.delete_confirm }}</p>
+                <div id="delete-project-list"></div>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" onclick="closeModal('delete-confirm-modal')">{{ lang.buttons.cancel }}</button>
+                <button type="button" class="delete-btn" onclick="confirmDelete()">{{ lang.buttons.confirm }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加清理确认对话框 -->
+    <div id="cleanup-selected-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.dialogs.cleanup_title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('cleanup-selected-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>{{ lang.compose.dialogs.cleanup_confirm }}</p>
+                <div id="cleanup-projects-list"></div>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" onclick="closeModal('cleanup-selected-modal')">{{ lang.buttons.cancel }}</button>
+                <button type="button" class="clean-btn" onclick="confirmCleanupSelected()">{{ lang.buttons.confirm }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改新建项目对话框 -->
+    <div id="add-project-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.dialogs.add_project.title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('add-project-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- 项目名称 -->
+                <div class="form-group">
+                    <label>{{ lang.compose.dialogs.add_project.name }}：</label>
+                    <input type="text" id="project-name" placeholder="{{ lang.compose.dialogs.add_project.name_placeholder }}">
+                    <p class="help-text">{{ lang.compose.dialogs.add_project.name_help }}</p>
+                </div>
+
+                <!-- docker-compose.yml 配置 -->
+                <div class="form-group">
+                    <label>docker-compose.yml：</label>
+                    <div class="tab-buttons">
+                        <button type="button" class="tab-btn active" onclick="switchComposeTab('editor')">
+                            {{ lang.compose.dialogs.add_project.editor }}
+                        </button>
+                        <button type="button" class="tab-btn" onclick="switchComposeTab('upload')">
+                            {{ lang.compose.dialogs.add_project.upload }}
+                        </button>
+                    </div>
+                    <div id="compose-editor-tab" class="tab-content active">
+                        <textarea id="compose-content" rows="10" placeholder="{{ lang.compose.dialogs.add_project.compose_placeholder }}"></textarea>
+                    </div>
+                    <div id="compose-upload-tab" class="tab-content">
+                        <input type="file" id="compose-file" accept=".yml,.yaml">
+                    </div>
+                </div>
+
+                <!-- .env 配置 -->
+                <div class="form-group">
+                    <label>.env {{ lang.compose.dialogs.add_project.optional }}：</label>
+                    <div class="tab-buttons">
+                        <button type="button" class="tab-btn active" onclick="switchEnvTab('editor')">
+                            {{ lang.compose.dialogs.add_project.editor }}
+                        </button>
+                        <button type="button" class="tab-btn" onclick="switchEnvTab('upload')">
+                            {{ lang.compose.dialogs.add_project.upload }}
+                        </button>
+                    </div>
+                    <div id="env-editor-tab" class="tab-content active">
+                        <textarea id="env-content" rows="5" placeholder="{{ lang.compose.dialogs.add_project.env_placeholder }}"></textarea>
+                    </div>
+                    <div id="env-upload-tab" class="tab-content">
+                        <input type="file" id="env-file" accept=".env">
+                    </div>
+                </div>
+
+                <!-- 添加运行选项 -->
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="run-after-create" checked>
+                        {{ lang.compose.dialogs.add_project.run_after_create }}
+                    </label>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" onclick="closeModal('add-project-modal')">{{ lang.buttons.cancel }}</button>
+                <button type="button" class="add-btn" onclick="createProject()">{{ lang.buttons.confirm }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改代码转换对话框 -->
+    <div id="convert-code-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ lang.compose.dialogs.convert_title }}</h3>
+                <button type="button" class="close-btn" onclick="closeModal('convert-code-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>{{ lang.compose.dialogs.docker_run_command }}：</label>
+                    <textarea id="docker-run-command" rows="5" 
+                            placeholder="docker run -d --name my-app -p 80:80 -v /data:/data nginx:latest"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>{{ lang.compose.dialogs.compose_result }}：</label>
+                    <div class="code-container">
+                        <textarea id="compose-result" rows="10"></textarea>
+                        <button type="button" class="copy-btn" onclick="copyToClipboard('compose-result')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="convert-btn" onclick="convertRunToCompose()">
+                    {{ lang.compose.buttons.convert }}
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+let savedComposeContent = '';
+let savedEnvContent = '';
+
+async function createProject() {
+    const projectName = document.getElementById('project-name').value.trim();
+    if (!projectName) {
+        alert('请输入项目名称');
+        return;
+    }
+    
+    // 验证项目名称格式
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/.test(projectName)) {
+        alert('项目名称只能包含字母、数字、下划线、点和连字符，且必须以字母或数字开头');
+        return;
+    }
+    
+    // 获取 compose 配置
+    let composeContent = '';
+    if (document.getElementById('compose-editor-tab').classList.contains('active')) {
+        composeContent = document.getElementById('compose-content').value.trim();
+        savedComposeContent = composeContent;  // 保存内容
+    } else {
+        const composeFile = document.getElementById('compose-file').files[0];
+        if (!composeFile) {
+            alert('请选择 docker-compose.yml 文件');
+            return;
+        }
+        composeContent = await composeFile.text();
+        savedComposeContent = composeContent;  // 保存内容
+    }
+    
+    if (!composeContent) {
+        alert('请提供 docker-compose.yml 配置');
+        return;
+    }
+    
+    // 获取 env 配置（可选）
+    let envContent = '';
+    if (document.getElementById('env-editor-tab').classList.contains('active')) {
+        envContent = document.getElementById('env-content').value.trim();
+        savedEnvContent = envContent;  // 保存内容
+    } else if (document.getElementById('env-file').files.length > 0) {
+        const envFile = document.getElementById('env-file').files[0];
+        envContent = await envFile.text();
+        savedEnvContent = envContent;  // 保存内容
+    }
+
+    // 获取运行选项
+    const runAfterCreate = document.getElementById('run-after-create').checked;
+    
+    try {
+        const response = await fetch('{{ url_for("compose.create_project") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                project_name: projectName,
+                compose_content: savedComposeContent,  // 使用保存的内容
+                env_content: savedEnvContent,  // 使用保存的内容
+                run_after_create: runAfterCreate
+            })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            if (runAfterCreate) {
+                // 如果选择了创建后运行，显示部署日志
+                const deployLogsModal = document.getElementById('deploy-logs-modal');
+                const deployLogs = document.getElementById('deploy-logs');
+                deployLogsModal.style.display = 'block';
+                deployLogs.innerHTML = result.logs.join('\n');
+                
+                // 3秒后刷新页面
+                setTimeout(() => location.reload(), 3000);
+            } else {
+                alert('项目创建成功');
+                location.reload();
+            }
+        } else {
+            alert('创建失败: ' + result.message);
+        }
+    } catch (error) {
+        alert('创建出错: ' + error.message);
+    }
+    
+    closeModal('add-project-modal');
+}
+
+// 添加文件读取事件处理
+document.getElementById('compose-file').addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const content = await file.text();
+        savedComposeContent = content;  // 保存文件内容
+    }
+});
+
+document.getElementById('env-file').addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const content = await file.text();
+        savedEnvContent = content;  // 保存文件内容
+    }
+});
+
+// 添加编辑器内容变更事件处理
+document.getElementById('compose-content').addEventListener('input', (event) => {
+    savedComposeContent = event.target.value;  // 保存编辑器内容
+});
+
+document.getElementById('env-content').addEventListener('input', (event) => {
+    savedEnvContent = event.target.value;  // 保存编辑器内容
+});
+
+function toggleProject(projectName) {
+    const content = document.getElementById(`project-${projectName}`);
+    content.classList.toggle('active');
+}
+
+function selectAll() {
+    document.querySelectorAll('.project-checkbox').forEach(cb => cb.checked = true);
+}
+
+function deselectAll() {
+    document.querySelectorAll('.project-checkbox').forEach(cb => cb.checked = false);
+}
+
+function selectNotRunning() {
+    document.querySelectorAll('.project-checkbox').forEach(cb => {
+        const statusElement = cb.closest('.project-item').querySelector('.project-status');
+        cb.checked = statusElement.textContent.trim() !== 'running';
+    });
+}
+
+async function saveFile(project, type) {
+    const content = document.getElementById(`${type}-${project}`).value;
+    
+    try {
+        const response = await fetch('{{ url_for("compose.save_file") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                project: project,
+                type: type,
+                content: content
+            })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('保存成功');
+        } else {
+            alert('保存失败: ' + result.message);
+        }
+    } catch (error) {
+        alert('保存出错: ' + error.message);
+    }
+}
+
+async function deploySelected(action) {
+    const selected = Array.from(document.querySelectorAll('.project-checkbox:checked'))
+                        .map(cb => cb.value);
+    
+    if (selected.length === 0) {
+        alert('请先选择项目');
+        return;
+    }
+    
+    if (!confirm(`确定要${action === 'up' ? '启动' : '停止'}选中的项目吗？`)) {
+        return;
+    }
+    
+    // 显示部署日志对话框
+    const deployLogsModal = document.getElementById('deploy-logs-modal');
+    const deployLogs = document.getElementById('deploy-logs');
+    const deployProgress = document.getElementById('deploy-progress');
+    const confirmButton = document.getElementById('confirm-deploy-btn');
+    
+    deployLogsModal.style.display = 'block';
+    deployLogs.innerHTML = '准备部署...\n';
+    deployProgress.style.display = 'block';
+    confirmButton.style.display = 'none';
+    
+    try {
+        let currentIndex = 0;
+        const totalProjects = selected.length;
+        
+        for (const project of selected) {
+            currentIndex++;
+            const progressPercent = (currentIndex / totalProjects) * 100;
+            
+            // 更新进度条和当前项目
+            document.querySelector('.progress-fill').style.width = `${progressPercent}%`;
+            document.getElementById('current-project').textContent = project;
+            
+            // 添加项目开始部署的日志
+            deployLogs.innerHTML += `\n[${project}] 开始${action === 'up' ? '启动' : '停止'}...\n`;
+            deployLogs.scrollTop = deployLogs.scrollHeight;
+            
+            const response = await fetch('{{ url_for("compose.deploy_projects") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    projects: [project],
+                    action: action
+                })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                result.results.forEach(r => {
+                    if (r.logs && r.logs.length > 0) {
+                        deployLogs.innerHTML += r.logs.join('\n') + '\n';
+                    } else {
+                        deployLogs.innerHTML += r.status === 'success' ? 
+                            `[${r.project}] 操作成功\n` : 
+                            `[${r.project}] 操作失败 - ${r.message}\n`;
+                    }
+                    deployLogs.scrollTop = deployLogs.scrollHeight;
+                });
+            } else {
+                deployLogs.innerHTML += `[${project}] 操作失败: ${result.message}\n`;
+                deployLogs.scrollTop = deployLogs.scrollHeight;
+            }
+        }
+        
+        // 部署完成后
+        deployProgress.style.display = 'none';
+        confirmButton.style.display = 'block';
+        deployLogs.innerHTML += '\n所有操作已完成。\n';
+        deployLogs.scrollTop = deployLogs.scrollHeight;
+        
+        // 刷新项目状态
+        await refreshProjectStatus();
+        
+    } catch (error) {
+        deployLogs.innerHTML += `\n操作出错: ${error.message}\n`;
+        deployLogs.scrollTop = deployLogs.scrollHeight;
+        deployProgress.style.display = 'none';
+        confirmButton.style.display = 'block';
+    }
+}
+
+async function deployProject(projectName, action) {
+    if (!confirm(`确定要${action === 'up' ? '启动' : '停止'} ${projectName} 吗？`)) {
+        return;
+    }
+    
+    // 显示部署日志对话框
+    const deployLogsModal = document.getElementById('deploy-logs-modal');
+    const deployLogs = document.getElementById('deploy-logs');
+    const deployProgress = document.getElementById('deploy-progress');
+    const confirmButton = document.getElementById('confirm-deploy-btn');
+    
+    deployLogsModal.style.display = 'block';
+    deployLogs.innerHTML = `准备${action === 'up' ? '启动' : '停止'} ${projectName}...\n`;
+    deployProgress.style.display = 'block';
+    confirmButton.style.display = 'none';
+    
+    try {
+        // 更新进度条和当前项目
+        document.querySelector('.progress-fill').style.width = '50%';
+        document.getElementById('current-project').textContent = projectName;
+        
+        const response = await fetch('{{ url_for("compose.deploy_projects") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                projects: [projectName],
+                action: action
+            })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            result.results.forEach(r => {
+                if (r.logs && r.logs.length > 0) {
+                    deployLogs.innerHTML += r.logs.join('\n') + '\n';
+                } else {
+                    deployLogs.innerHTML += r.status === 'success' ? 
+                        `操作成功\n` : 
+                        `操作失败 - ${r.message}\n`;
+                }
+                deployLogs.scrollTop = deployLogs.scrollHeight;
+            });
+            
+            // 更新进度为完成
+            document.querySelector('.progress-fill').style.width = '100%';
+            
+            // 刷新项目状态
+            await refreshProjectStatus();
+        } else {
+            deployLogs.innerHTML += `操作失败: ${result.message}\n`;
+        }
+        
+    } catch (error) {
+        deployLogs.innerHTML += `操作出错: ${error.message}\n`;
+    } finally {
+        deployProgress.style.display = 'none';
+        confirmButton.style.display = 'block';
+        deployLogs.scrollTop = deployLogs.scrollHeight;
+    }
+}
+
+// 添加页面加载时刷新状态的函数
+async function refreshProjectStatus() {
+    try {
+        const response = await fetch('{{ url_for("compose.get_projects_status") }}');
+        const result = await response.json();
+        if (result.status === 'success') {
+            result.projects.forEach(project => {
+                updateProjectStatus(project.name, project.status, project.running_containers, project.container_count);
+            });
+        }
+    } catch (error) {
+        console.error('Error refreshing status:', error);
+    }
+}
+
+// 更新目状态的函数
+function updateProjectStatus(projectName, status, runningContainers, totalContainers) {
+    const projectElement = document.querySelector(`[data-project="${projectName}"]`);
+    if (projectElement) {
+        const statusElement = projectElement.querySelector('.project-status');
+        const containersElement = projectElement.querySelector('.project-containers');
+        const startButton = projectElement.querySelector('.start-btn');
+        const stopButton = projectElement.querySelector('.stop-btn');
+        
+        statusElement.className = `project-status status-${status}`;
+        statusElement.textContent = status;
+        containersElement.innerHTML = `<i class="fas fa-cube"></i> ${runningContainers}/${totalContainers}`;
+        
+        startButton.disabled = status === 'running';
+        stopButton.disabled = status !== 'running';
+    }
+}
+
+// 确认部署完成的函数
+function confirmDeploy() {
+    closeModal('deploy-logs-modal');
+    location.reload();
+}
+
+// 页面加载时刷新状态
+document.addEventListener('DOMContentLoaded', function() {
+    refreshProjectStatus();
+});
+
+// ... 添加镜像源配置相关函数 ...
+
+async function saveRootPath() {
+    const newPath = document.getElementById('root-path').value.trim();
+    try {
+        const response = await fetch('{{ url_for("compose.save_root_path") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: newPath })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('根目录保存成功');
+            // 更新输入框的值
+            document.getElementById('root-path').value = result.new_path;
+            // 刷新页面以显示新目录的内容
+            location.reload();
+        } else {
+            alert('保存失败: ' + result.message);
+        }
+    } catch (error) {
+        alert('保存出错: ' + error.message);
+    }
+}
+
+function deleteProject(projectName) {
+    document.getElementById('delete-project-list').innerHTML = `
+        <div class="delete-project-list">
+            <div class="delete-project-item">${projectName}</div>
+        </div>
+    `;
+    document.getElementById('delete-confirm-modal').style.display = 'block';
+    window.projectToDelete = projectName;  // 保存要删除的项目名称
+}
+
+async function confirmDelete() {
+    // 如果是单个项目删除
+    if (window.projectToDelete) {
+        try {
+            const response = await fetch('{{ url_for("compose.delete_projects") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ projects: [window.projectToDelete] })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('删除成功');
+                location.reload();
+            } else {
+                alert('删除失败: ' + result.message);
+            }
+        } catch (error) {
+            alert('删除出错: ' + error.message);
+        }
+        window.projectToDelete = null;  // 清除保存的项目名称
+    } else {
+        // 如果是批量删除（通过勾选）
+        const selected = Array.from(document.querySelectorAll('.project-checkbox:checked'))
+                            .map(cb => cb.value);
+        
+        try {
+            const response = await fetch('{{ url_for("compose.delete_projects") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ projects: selected })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('删除成功');
+                location.reload();
+            } else {
+                alert('删除失败: ' + result.message);
+            }
+        } catch (error) {
+            alert('删除出错: ' + error.message);
+        }
+    }
+    
+    closeModal('delete-confirm-modal');
+}
+
+function deleteSelected() {
+    const selected = Array.from(document.querySelectorAll('.project-checkbox:checked'))
+                        .map(cb => cb.value);
+    
+    if (selected.length === 0) {
+        alert('请先选择要删除的项目');
+        return;
+    }
+
+    document.getElementById('delete-project-list').innerHTML = `
+        <div class="delete-project-list">
+            ${selected.map(name => `<div class="delete-project-item">${name}</div>`).join('')}
+        </div>
+    `;
+    document.getElementById('delete-confirm-modal').style.display = 'block';
+    window.projectToDelete = null;  // 清除单个项目删除标记
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        // 清空项目列表
+        const projectList = document.getElementById('delete-project-list');
+        if (projectList) {
+            projectList.innerHTML = '';
+        }
+    }
+}
+
+// 添加点击对话框外部关闭的功能
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
+    }
+}
+
+async function cleanupSelected() {
+    const selected = Array.from(document.querySelectorAll('.project-checkbox:checked'))
+                        .map(cb => cb.value);
+    
+    if (selected.length === 0) {
+        alert('请先选择要清理的项目');
+        return;
+    }
+
+    document.getElementById('cleanup-projects-list').innerHTML = `
+        <div class="delete-project-list">
+            ${selected.map(name => `<div class="delete-project-item">${name}</div>`).join('')}
+        </div>
+    `;
+    document.getElementById('cleanup-selected-modal').style.display = 'block';
+}
+
+async function confirmCleanupSelected() {
+    const selected = Array.from(document.querySelectorAll('.project-checkbox:checked'))
+                        .map(cb => cb.value);
+    
+    try {
+        // 显示部署日志对话框以显示清理进度
+        const deployLogsModal = document.getElementById('deploy-logs-modal');
+        const deployLogs = document.getElementById('deploy-logs');
+        
+        deployLogsModal.style.display = 'block';
+        deployLogs.innerHTML = '开始清理选中的项目...\n';
+        
+        for (const project of selected) {
+            deployLogs.innerHTML += `\n[${project}] 开始清理...\n`;
+            
+            const response = await fetch('{{ url_for("compose.cleanup_project") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ project: project })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                deployLogs.innerHTML += result.logs.join('\n') + '\n';
+            } else {
+                deployLogs.innerHTML += `清理失败: ${result.message}\n`;
+            }
+            deployLogs.scrollTop = deployLogs.scrollHeight;
+        }
+        
+        deployLogs.innerHTML += '\n所有清理操作已完成。\n';
+        
+        // 3秒后刷新页面
+        setTimeout(() => location.reload(), 3000);
+        
+    } catch (error) {
+        alert('清理出错: ' + error.message);
+    }
+    
+    closeModal('cleanup-selected-modal');
+}
+
+function showAddProjectModal() {
+    document.getElementById('add-project-modal').style.display = 'block';
+}
+
+function switchComposeTab(tab) {
+    document.querySelectorAll('#add-project-modal .tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelectorAll('#add-project-modal .tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    if (tab === 'editor') {
+        document.querySelector('[onclick="switchComposeTab(\'editor\')"]').classList.add('active');
+        document.getElementById('compose-editor-tab').classList.add('active');
+    } else {
+        document.querySelector('[onclick="switchComposeTab(\'upload\')"]').classList.add('active');
+        document.getElementById('compose-upload-tab').classList.add('active');
+    }
+}
+
+function switchEnvTab(tab) {
+    const editorBtn = document.querySelector('[onclick="switchEnvTab(\'editor\')"]');
+    const uploadBtn = document.querySelector('[onclick="switchEnvTab(\'upload\')"]');
+    const editorTab = document.getElementById('env-editor-tab');
+    const uploadTab = document.getElementById('env-upload-tab');
+    
+    if (tab === 'editor') {
+        editorBtn.classList.add('active');
+        uploadBtn.classList.remove('active');
+        editorTab.classList.add('active');
+        uploadTab.classList.remove('active');
+    } else {
+        editorBtn.classList.remove('active');
+        uploadBtn.classList.add('active');
+        editorTab.classList.remove('active');
+        uploadTab.classList.add('active');
+    }
+}
+
+async function saveRegistryConfig() {
+    const registries = Array.from(document.getElementsByClassName('registry-address'))
+        .map(input => input.value.trim())
+        .filter(value => value !== '');
+    
+    try {
+        const response = await fetch('{{ url_for("compose.save_registry_config") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ registries: registries })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('配置保存成功');
+            closeModal('config-modal');
+        } else {
+            alert('保存失败：' + result.message);
+        }
+    } catch (error) {
+        alert('保存出错：' + error.message);
+    }
+}
+
+async function testRegistry() {
+    const registries = Array.from(document.getElementsByClassName('registry-address'))
+        .map(input => input.value.trim())
+        .filter(value => value !== '');
+
+    if (registries.length === 0) {
+        alert('请至少输入一个镜像源地址');
+        return;
+    }
+
+    const testResult = document.getElementById('test-result');
+    testResult.style.display = 'block';
+    testResult.className = 'test-result';
+    testResult.innerHTML = '正在测试连接...<br>';
+
+    for (const registry of registries) {
+        try {
+            const response = await fetch('{{ url_for("compose.test_registry") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ registry })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                testResult.innerHTML += `<div class="test-success">${registry}: 连接成功！${result.message}</div>`;
+            } else {
+                testResult.innerHTML += `<div class="test-error">${registry}: 连接失败：${result.error}</div>`;
+            }
+        } catch (error) {
+            testResult.innerHTML += `<div class="test-error">${registry}: 测试出错：${error.message}</div>`;
+        }
+    }
+}
+
+function showConvertModal() {
+    document.getElementById('convert-code-modal').style.display = 'block';
+    // 清空输入和结果
+    document.getElementById('docker-run-command').value = '';
+    document.getElementById('compose-result').value = '';
+}
+
+async function convertRunToCompose() {
+    const runCommand = document.getElementById('docker-run-command').value.trim();
+    if (!runCommand) {
+        alert('请输入 docker run 命令');
+        return;
+    }
+    
+    try {
+        const response = await fetch('{{ url_for("compose.convert_run_to_compose") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ command: runCommand })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            document.getElementById('compose-result').value = result.compose_yaml;
+        } else {
+            alert('转换失败: ' + result.message);
+        }
+    } catch (error) {
+        alert('转换出错: ' + error.message);
+    }
+}
+
+async function copyToClipboard(elementId) {
+    const textarea = document.getElementById(elementId);
+    const copyBtn = textarea.parentElement.querySelector('.copy-btn');
+    
+    try {
+        await navigator.clipboard.writeText(textarea.value);
+        
+        // 显示复制成功的视觉反馈
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    } catch (err) {
+        // 如果 clipboard API 不可用，使用传统方法
+        textarea.select();
+        document.execCommand('copy');
+        
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    }
+}
+
+function showConfigModal() {
+    document.getElementById('config-modal').style.display = 'block';
+    // 加载当前配置
+    loadCurrentConfig();
+}
+
+async function loadCurrentConfig() {
+    try {
+        const response = await fetch('{{ url_for("compose.get_registry_config") }}');
+        const config = await response.json();
+        if (config.status === 'success') {
+            document.getElementById('registry-address').value = config.registry || '';
+            // 尝试匹配预设值
+            const presetSelect = document.getElementById('preset-registry');
+            const options = Array.from(presetSelect.options);
+            const matchingOption = options.find(option => option.value === config.registry);
+            if (matchingOption) {
+                matchingOption.selected = true;
+            } else {
+                presetSelect.value = '';
+            }
+        }
+    } catch (error) {
+        console.error('加载配置失败:', error);
+    }
+}
+
+let currentPath = '/';
+
+async function openDirectoryDialog() {
+    document.getElementById('directory-dialog').style.display = 'block';
+    await loadDirectories(currentPath);
+}
+
+async function loadDirectories(path) {
+    try {
+        const response = await fetch(`{{ url_for("compose.list_directories") }}?path=${encodeURIComponent(path)}`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            currentPath = data.current_path;
+            document.getElementById('current-path').textContent = currentPath;
+            
+            const directoryList = document.getElementById('directory-list');
+            directoryList.innerHTML = '';
+            
+            // 添加返回上级目录选项
+            if (currentPath !== '/') {
+                const parentItem = document.createElement('div');
+                parentItem.className = 'directory-item parent';
+                parentItem.innerHTML = '<i class="fas fa-level-up-alt"></i> ..';
+                parentItem.onclick = () => loadDirectories(data.parent_path);
+                directoryList.appendChild(parentItem);
+            }
+            
+            // 添加子目录
+            data.directories.forEach(dir => {
+                const dirItem = document.createElement('div');
+                dirItem.className = 'directory-item';
+                dirItem.innerHTML = `<i class="fas fa-folder"></i> ${dir}`;
+                dirItem.onclick = () => loadDirectories(data.current_path + '/' + dir);
+                directoryList.appendChild(dirItem);
+            });
+        } else {
+            alert('加载目录失败: ' + data.message);
+        }
+    } catch (error) {
+        alert('加载目录出错: ' + error.message);
+    }
+}
+
+function selectDirectory() {
+    document.getElementById('root-path').value = currentPath;
+    closeModal('directory-dialog');
+}
+</script>
+{% endblock %} 

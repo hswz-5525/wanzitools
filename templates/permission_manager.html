@@ -1,0 +1,658 @@
+{% extends "base.html" %}
+
+{% block title %}文件权限管理{% endblock %}
+
+{% block extra_style %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+        background-color: #f5f7fa;
+        color: #2c3e50;
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 2.2em;
+    }
+
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-left {
+        flex: 0 0 auto;
+    }
+
+    .nav-right {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .navigation a {
+        color: #3498db;
+        text-decoration: none;
+        padding: 5px 8px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+    .navigation a:hover {
+        background-color: #ebf5ff;
+    }
+
+    .file-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .file-table th {
+        background-color: #3498db;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .file-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .file-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .file-table input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .controls {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    .folder-icon {
+        color: #f1c40f;
+        margin-right: 5px;
+    }
+
+    .file-icon {
+        color: #95a5a6;
+        margin-right: 5px;
+    }
+
+    .permission-grid {
+        margin-bottom: 20px;
+    }
+
+    .permission-table {
+        width: auto;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        background-color: white;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .permission-table th,
+    .permission-table td {
+        padding: 10px 15px;
+        text-align: center;
+        border: 1px solid #eee;
+    }
+
+    .permission-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .permission-table td:first-child {
+        text-align: left;
+        font-weight: 500;
+    }
+
+    .permission-table input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .permission-preview {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .permission-preview code {
+        font-family: monospace;
+        background-color: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-left: 5px;
+    }
+
+    .search-box {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .search-box form {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-box input[type="text"] {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .search-box button {
+        padding: 8px 15px;
+    }
+
+    .clear-search {
+        color: #e74c3c;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        background-color: #fdf0ed;
+    }
+
+    .clear-search:hover {
+        background-color: #fce4e1;
+    }
+
+    .search-results-info {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        color: #2c3e50;
+        font-size: 14px;
+    }
+
+    .goto-dir-btn {
+        display: inline-block;
+        margin-left: 10px;
+        padding: 2px 8px;
+        font-size: 12px;
+        color: #3498db;
+        background-color: #ebf5ff;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .goto-dir-btn:hover {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .goto-dir-btn i {
+        margin-right: 4px;
+    }
+
+    .quick-permissions {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .quick-perm-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .quick-perm-btn:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .perm-code {
+        font-family: monospace;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .perm-desc {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    .home-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #2ecc71;
+        color: white !important;
+        padding: 8px 15px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .home-btn:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+    }
+
+    .home-btn i {
+        font-size: 1.1em;
+    }
+
+    .nav-separator {
+        margin: 0 10px;
+        color: #95a5a6;
+    }
+
+    /* 工具栏样式 */
+    .toolbar {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .toolbar button {
+        padding: 8px 15px;
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .toolbar button:hover {
+        background-color: #e9ecef;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* 添加工具提示样式 */
+    .toolbar button[title] {
+        position: relative;
+    }
+
+    .toolbar button[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 10px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- 搜索表单 -->
+    <div class="search-box">
+        <form action="{{ url_for('permission.index', current_dir=current_dir) }}" method="get">
+            <input type="text" name="search" value="{{ search_pattern }}" placeholder="{{ lang.permission.search.placeholder }}">
+            <button type="submit">{{ lang.permission.search.button }}</button>
+            {% if search_pattern %}
+            <a href="{{ url_for('permission.index', current_dir=current_dir) }}" class="clear-search">{{ lang.permission.search.clear }}</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- 修改权限的主表单 -->
+    <form action="{{ url_for('permission.change_permissions') }}" method="post" id="permission-form">
+        <input type="hidden" name="current_dir" value="{{ current_dir }}">
+
+        <!-- 导航栏 -->
+        <div class="navigation">
+            <div class="nav-left">
+                <a href="{{ url_for('permission.index') }}"><i class="fas fa-folder"></i> {{ lang.permission.navigation.root }}</a>
+            </div>
+            <div class="nav-right">
+                {% if current_dir %}
+                    {% set parts = current_dir.split('/') %}
+                    {% for part in parts %}
+                        {% set part_path = parts[:loop.index]|join('/') %}
+                        <span> > </span>
+                        <a href="{{ url_for('permission.index', current_dir=part_path) }}">{{ part }}</a>
+                    {% endfor %}
+                    {% if parts|length > 0 %}
+                        <span> > </span>
+                        {% set parent_dir = '/'.join(parts[:-1]) %}
+                        <a href="{{ url_for('permission.index', current_dir=parent_dir) }}">{{ lang.permission.navigation.back }}</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 搜索结果提示 -->
+        {% if is_search_result %}
+        <div class="search-results-info">
+            搜索结果: "{{ search_pattern }}" ({{ files_and_dirs|length }} 个匹配项)
+        </div>
+        {% endif %}
+
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <button type="button" onclick="selectAll()">{{ lang.buttons.select_all }}</button>
+            <button type="button" onclick="deselectAll()">{{ lang.buttons.deselect_all }}</button>
+            <button type="button" onclick="selectOnlyFiles()">{{ lang.permission.buttons.select_files }}</button>
+            <button type="button" onclick="selectOnlyDirs()">{{ lang.permission.buttons.select_dirs }}</button>
+            <button type="button" onclick="selectByExtension('.jpg,.jpeg,.png,.gif')">{{ lang.permission.buttons.select_images }}</button>
+            <button type="button" onclick="selectByExtension('.mp4,.avi,.mkv')">{{ lang.permission.buttons.select_videos }}</button>
+            <button type="button" onclick="selectByExtension('.txt,.doc,.docx,.pdf')">{{ lang.permission.buttons.select_docs }}</button>
+            <button type="button" onclick="invertSelection()">{{ lang.permission.buttons.invert }}</button>
+        </div>
+
+        <!-- 文件列表 -->
+        <table class="file-table">
+            <thead>
+                <tr>
+                    <th style="width: 50px">{{ lang.permission.table.select }}</th>
+                    <th>{{ lang.permission.table.name }}</th>
+                    {% if is_search_result %}
+                    <th>{{ lang.permission.table.location }}</th>
+                    {% endif %}
+                    <th>{{ lang.permission.table.permissions_oct }}</th>
+                    <th>{{ lang.permission.table.permissions_str }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in files_and_dirs %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="filenames" 
+                               value="{{ item.rel_path if is_search_result else item.name }}"
+                               class="file-checkbox"
+                               data-is-dir="{{ item.is_dir|lower }}">
+                    </td>
+                    <td>
+                        {% if item.is_dir %}
+                        <span class="folder-icon">📁</span>
+                        <a href="{{ url_for('permission.index', current_dir=(item.rel_path if is_search_result else (current_dir + '/' + item.name if current_dir else item.name))) }}">{{ item.name }}</a>
+                        {% else %}
+                        <span class="file-icon">📄</span>
+                        {{ item.name }}
+                        {% endif %}
+                    </td>
+                    {% if is_search_result %}
+                    <td>
+                        {{ item.rel_path }}
+                        {% if not item.is_dir %}
+                        <a href="{{ url_for('permission.index', current_dir=item.parent_path) }}" class="goto-dir-btn" title="跳转到所在目录">
+                            <i class="fas fa-external-link-alt"></i> 跳转到目录
+                        </a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                    <td>{{ item.mode_oct }}</td>
+                    <td><code>{{ item.mode_str }}</code></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- 权限控制区域 -->
+        <div class="controls">
+            <div class="quick-permissions">
+                <button type="button" onclick="setPermission('0777')" class="quick-perm-btn">
+                    <span class="perm-code">777</span>
+                    <span class="perm-desc">{{ lang.permission.quick_perms.full }}</span>
+                </button>
+                <button type="button" onclick="setPermission('0755')" class="quick-perm-btn">
+                    <span class="perm-code">755</span>
+                    <span class="perm-desc">{{ lang.permission.quick_perms.dir }}</span>
+                </button>
+                <button type="button" onclick="setPermission('0644')" class="quick-perm-btn">
+                    <span class="perm-code">644</span>
+                    <span class="perm-desc">{{ lang.permission.quick_perms.file }}</span>
+                </button>
+                <button type="button" onclick="setPermission('0600')" class="quick-perm-btn">
+                    <span class="perm-code">600</span>
+                    <span class="perm-desc">{{ lang.permission.quick_perms.private }}</span>
+                </button>
+            </div>
+            
+            <div class="permission-grid">
+                <table class="permission-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ lang.permission.permissions.read }}</th>
+                            <th>{{ lang.permission.permissions.write }}</th>
+                            <th>{{ lang.permission.permissions.execute }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ lang.permission.permissions.owner }}</td>
+                            <td><input type="checkbox" name="owner_read" value="4" checked></td>
+                            <td><input type="checkbox" name="owner_write" value="2"></td>
+                            <td><input type="checkbox" name="owner_execute" value="1"></td>
+                        </tr>
+                        <tr>
+                            <td>{{ lang.permission.permissions.group }}</td>
+                            <td><input type="checkbox" name="group_read" value="4"></td>
+                            <td><input type="checkbox" name="group_write" value="2"></td>
+                            <td><input type="checkbox" name="group_execute" value="1"></td>
+                        </tr>
+                        <tr>
+                            <td>{{ lang.permission.permissions.others }}</td>
+                            <td><input type="checkbox" name="others_read" value="4"></td>
+                            <td><input type="checkbox" name="others_write" value="2"></td>
+                            <td><input type="checkbox" name="others_execute" value="1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="permission-preview">
+                <span>{{ lang.permission.permissions.preview }}：</span>
+                <code id="permission-display">0644</code>
+            </div>
+            <input type="hidden" name="mode" id="permission-value" value="0644">
+            <button type="submit">{{ lang.permission.buttons.modify }}</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.permission-table input[type="checkbox"]');
+        const permissionDisplay = document.getElementById('permission-display');
+        const permissionValue = document.getElementById('permission-value');
+
+        function updatePermissions() {
+            let owner = 0, group = 0, others = 0;
+
+            // 计算所有者权限
+            if (document.querySelector('[name="owner_read"]').checked) owner += 4;
+            if (document.querySelector('[name="owner_write"]').checked) owner += 2;
+            if (document.querySelector('[name="owner_execute"]').checked) owner += 1;
+
+            // 计算用户组权限
+            if (document.querySelector('[name="group_read"]').checked) group += 4;
+            if (document.querySelector('[name="group_write"]').checked) group += 2;
+            if (document.querySelector('[name="group_execute"]').checked) group += 1;
+
+            // 计算其他用户权限
+            if (document.querySelector('[name="others_read"]').checked) others += 4;
+            if (document.querySelector('[name="others_write"]').checked) others += 2;
+            if (document.querySelector('[name="others_execute"]').checked) others += 1;
+
+            // 更新显示和隐藏输入值
+            const permissionString = `0${owner}${group}${others}`;
+            permissionDisplay.textContent = permissionString;
+            permissionValue.value = permissionString;
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updatePermissions);
+        });
+
+        // 初始化显示
+        updatePermissions();
+    });
+
+    function setPermission(permValue) {
+        // 更新隐藏的权限值
+        document.getElementById('permission-value').value = permValue;
+        document.getElementById('permission-display').textContent = permValue;
+        
+        // 更新复选框状态
+        const permissions = {
+            '7': ['4', '2', '1'],
+            '6': ['4', '2', '0'],
+            '5': ['4', '0', '1'],
+            '4': ['4', '0', '0'],
+            '0': ['0', '0', '0']
+        };
+        
+        const [_, owner, group, others] = permValue.split('');
+        
+        // 设置所有者权限
+        document.querySelector('[name="owner_read"]').checked = permissions[owner][0] === '4';
+        document.querySelector('[name="owner_write"]').checked = permissions[owner][1] === '2';
+        document.querySelector('[name="owner_execute"]').checked = permissions[owner][2] === '1';
+        
+        // 设置用户组权限
+        document.querySelector('[name="group_read"]').checked = permissions[group][0] === '4';
+        document.querySelector('[name="group_write"]').checked = permissions[group][1] === '2';
+        document.querySelector('[name="group_execute"]').checked = permissions[group][2] === '1';
+        
+        // 设置其他用户权限
+        document.querySelector('[name="others_read"]').checked = permissions[others][0] === '4';
+        document.querySelector('[name="others_write"]').checked = permissions[others][1] === '2';
+        document.querySelector('[name="others_execute"]').checked = permissions[others][2] === '1';
+    }
+
+    function selectAll() {
+        document.querySelectorAll('.file-checkbox').forEach(cb => cb.checked = true);
+    }
+
+    function deselectAll() {
+        document.querySelectorAll('.file-checkbox').forEach(cb => cb.checked = false);
+    }
+
+    function selectOnlyFiles() {
+        document.querySelectorAll('.file-checkbox').forEach(cb => {
+            cb.checked = cb.dataset.isDir === 'false';
+        });
+    }
+
+    function selectOnlyDirs() {
+        document.querySelectorAll('.file-checkbox').forEach(cb => {
+            cb.checked = cb.dataset.isDir === 'true';
+        });
+    }
+
+    function selectByExtension(extensions) {
+        const extList = extensions.toLowerCase().split(',');
+        document.querySelectorAll('.file-checkbox').forEach(cb => {
+            const fileName = cb.value.toLowerCase();
+            cb.checked = extList.some(ext => fileName.endsWith(ext));
+        });
+    }
+
+    function invertSelection() {
+        document.querySelectorAll('.file-checkbox').forEach(cb => {
+            cb.checked = !cb.checked;
+        });
+    }
+
+    // 添加键盘快捷键支持
+    document.addEventListener('keydown', function(e) {
+        // Ctrl + A: 全选
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            selectAll();
+        }
+        // Ctrl + D: 取消全选
+        else if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            deselectAll();
+        }
+        // Ctrl + I: 反选
+        else if (e.ctrlKey && e.key === 'i') {
+            e.preventDefault();
+            invertSelection();
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lang.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #2c3e50;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .title-container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .version {
+            font-size: 0.4em;
+            color: #7f8c8d;
+            vertical-align: super;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            padding: 10px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .contact-info a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-info a:hover {
+            color: #2980b9;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tool-card a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+
+        .tool-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .tool-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .tool-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .module-icon {
+            font-size: 3em;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .module-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .module-description {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        .version-info {
+            text-align: right;
+            color: #666;
+            font-size: 0.8em;
+            margin: 20px;
+            padding: 5px 10px;
+        }
+
+        .version-info span {
+            background-color: #f8f9fa;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .language-select {
+            padding: 8px 30px 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            transition: all 0.2s;
+        }
+
+        .language-select:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .language-select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+        }
+
+        .language-icon {
+            margin-right: 8px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switcher">
+        <select class="language-select" onchange="changeLanguage(this.value)">
+            {% for code, name in supported_languages.items() %}
+            <option value="{{ code }}" {% if code == current_lang %}selected{% endif %}>
+                {{ name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="header">
+        <div class="title-container">
+            <h1>丸子工具箱 <span class="version">v{{ version }}</span></h1>
+        </div>
+        <div class="contact-info">
+            <p><i class="fas fa-comment"></i> {{ lang.contact.wechat }}</p>
+            <p><i class="fas fa-blog"></i> {{ lang.contact.blog }}: <a href="https://665525.xyz" target="_blank">665525.xyz</a></p>
+            <p><i class="fab fa-git-alt"></i> {{ lang.contact.gitee }}: <a href="https://gitee.com/hswz5525" target="_blank">gitee.com/hswz5525</a></p>
+        </div>
+    </div>
+
+    <div class="module-grid">
+        <a href="{{ url_for('permission.index') }}" class="module-card">
+            <i class="fas fa-key module-icon"></i>
+            <h2 class="module-title">{{ lang.modules.permission.name }}</h2>
+            <p class="module-description">{{ lang.modules.permission.description }}</p>
+        </a>
+
+        <a href="{{ url_for('image.image_list') }}" class="module-card">
+            <i class="fab fa-docker module-icon"></i>
+            <h2 class="module-title">{{ lang.modules.docker.name }}</h2>
+            <p class="module-description">{{ lang.modules.docker.description }}</p>
+        </a>
+
+        <a href="{{ url_for('compose.index') }}" class="module-card">
+            <i class="fas fa-layer-group module-icon"></i>
+            <h2 class="module-title">{{ lang.modules.compose.name }}</h2>
+            <p class="module-description">{{ lang.modules.compose.description }}</p>
+        </a>
+    </div>
+
+    <script>
+    function changeLanguage(langCode) {
+        window.location.href = "{{ url_for('change_language', lang_code='') }}" + langCode;
+    }
+    </script>
+</body>
+</html> 

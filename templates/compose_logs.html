@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lang.compose.logs.title }}{% endblock %}
+
+{% block extra_style %}
+<style>
+    .logs-container {
+        margin: 20px;
+    }
+
+    .log-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .log-title {
+        font-size: 1.2em;
+        font-weight: 500;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .log-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .log-table th,
+    .log-table td {
+        padding: 10px;
+        border: 1px solid #eee;
+        text-align: left;
+    }
+
+    .log-table th {
+        background-color: #f8f9fa;
+        font-weight: 500;
+    }
+
+    .log-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .status-success {
+        color: #27ae60;
+    }
+
+    .status-error {
+        color: #e74c3c;
+    }
+
+    .log-files {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .log-file-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+
+    .log-file-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .log-content {
+        font-family: monospace;
+        white-space: pre-wrap;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .refresh-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .refresh-btn:hover {
+        background-color: #2980b9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="logs-container">
+    <button class="refresh-btn" onclick="location.reload()">
+        <i class="fas fa-sync"></i> {{ lang.compose.logs.refresh }}
+    </button>
+
+    <!-- 操作历史 -->
+    <div class="log-section">
+        <h2 class="log-title">{{ lang.compose.logs.operation_history }}</h2>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>{{ lang.compose.logs.time }}</th>
+                    <th>{{ lang.compose.logs.operation }}</th>
+                    <th>{{ lang.compose.logs.project }}</th>
+                    <th>{{ lang.compose.logs.status }}</th>
+                    <th>{{ lang.compose.logs.message }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in history|reverse %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.operation }}</td>
+                    <td>{{ entry.project }}</td>
+                    <td class="status-{{ entry.status }}">{{ lang.compose.logs.status_types[entry.status] }}</td>
+                    <td>{{ entry.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 日志文件 -->
+    <div class="log-section">
+        <h2 class="log-title">{{ lang.compose.logs.log_files }}</h2>
+        <ul class="log-files">
+            {% for file in log_files %}
+            <li class="log-file-item" onclick="toggleLogContent('{{ file }}')">
+                <i class="fas fa-file-alt"></i> {{ file }}
+                <div id="content-{{ file }}" class="log-content"></div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+async function toggleLogContent(filename) {
+    const contentDiv = document.getElementById(`content-${filename}`);
+    
+    if (contentDiv.style.display === 'block') {
+        contentDiv.style.display = 'none';
+        return;
+    }
+    
+    try {
+        const response = await fetch(`{{ url_for('compose.get_log_file', filename='') }}${filename}`);
+        if (response.ok) {
+            const content = await response.text();
+            contentDiv.textContent = content;
+            contentDiv.style.display = 'block';
+        } else {
+            alert('{{ lang.compose.logs.error.get_content }}');
+        }
+    } catch (error) {
+        alert('{{ lang.compose.logs.error.get_content_error }}: ' + error.message);
+    }
+}
+</script>
+{% endblock %} 

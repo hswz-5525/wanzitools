@@ -1,0 +1,33 @@
+services:
+  web:
+    build:
+      context: .  # 构建上下文，即 Dockerfile 所在的目录
+      dockerfile: Dockerfile  # Dockerfile 的路径
+    ports:
+      - "5525:5525"  # 将容器的5525端口映射到主机的5525端口
+    volumes:
+      - /vol1/1000/:/mnt/nas  # 挂载NAS存储
+      - /var/run/docker.sock:/var/run/docker.sock  # 挂载Docker socket以便管理Docker镜像
+      - ./logs:/app/logs  # 添加日志目录映射
+    environment:
+      - NAS_MOUNT_POINT=/mnt/nas  # 设置NAS挂载点环境变量
+    privileged: true  # 添加特权模式，用于管理文件权限
+    network_mode: "host"  # 使用host网络模式，直接使用主机的5525端口
+    depends_on:
+      - docker_manager
+
+  docker_manager:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/systemd/system:/etc/systemd/system  # 添加系统配置目录映射
+      - ./logs:/app/logs
+    privileged: true
+    network_mode: "host"
+    environment:
+      - DOCKER_API_VERSION=1.41  # 指定 Docker API 版本
+
+# 服务默认使用5525端口(Flask)
+# 访问地址：http://主机IP:5525
