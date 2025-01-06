@@ -1,0 +1,2 @@
+version: "1.4.0"
+compose_root: "/mnt/nas/docker" 

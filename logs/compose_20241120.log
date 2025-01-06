@@ -1,0 +1,359 @@
+2024-11-20 11:03:19,014 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:03:26,278 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:03:28,457 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:03:35,671 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:07:43,465 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:07:50,662 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:07:52,855 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:08:00,016 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:08:39,841 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:08:46,977 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:08:49,161 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:08:56,331 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:09:33,010 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:09:40,173 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:09:42,278 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:09:49,443 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:10:06,017 - INFO - Executing command for Joplin: docker compose up -d
+2024-11-20 11:11:25,105 - INFO - Executing command for arcadia: docker compose up -d
+2024-11-20 11:11:26,050 - ERROR - arcadia - Container arcadia  Creating
+2024-11-20 11:11:26,050 - ERROR - arcadia -  Container arcadia  Created
+2024-11-20 11:11:26,051 - ERROR - arcadia -  Container arcadia  Starting
+2024-11-20 11:11:26,051 - ERROR - arcadia -  Container arcadia  Started
+2024-11-20 11:11:26,051 - INFO - deploy_up - arcadia - 项目up成功
+2024-11-20 11:11:29,129 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:11:37,878 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:11:42,453 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:11:49,557 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:11:50,804 - INFO - Executing command for arcadia: docker compose down
+2024-11-20 11:12:01,832 - ERROR - arcadia - Container arcadia  Stopping
+2024-11-20 11:12:01,832 - ERROR - arcadia -  Container arcadia  Stopped
+2024-11-20 11:12:01,832 - ERROR - arcadia -  Container arcadia  Removing
+2024-11-20 11:12:01,832 - ERROR - arcadia -  Container arcadia  Removed
+2024-11-20 11:12:01,832 - INFO - deploy_down - arcadia - 项目down成功
+2024-11-20 11:12:04,889 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:12:11,917 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:12:14,006 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:12:21,052 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:13:10,075 - INFO - Executing command for amule: docker compose up -d
+2024-11-20 11:13:38,103 - ERROR - amule - amule Pulling 
+2024-11-20 11:13:38,103 - ERROR - amule -  4edfc05e3af2 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  febcc8ed0241 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  1121e356d2f3 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  346438061780 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  9eab4bbfd1ab Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  4f4fb700ef54 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  3cac94a0c501 Pulling fs layer 
+2024-11-20 11:13:38,103 - ERROR - amule -  1121e356d2f3 Waiting 
+2024-11-20 11:13:38,103 - ERROR - amule -  4f4fb700ef54 Waiting 
+2024-11-20 11:13:38,103 - ERROR - amule -  3cac94a0c501 Waiting 
+2024-11-20 11:13:38,103 - ERROR - amule -  346438061780 Waiting 
+2024-11-20 11:13:38,104 - ERROR - amule -  9eab4bbfd1ab Waiting 
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [>                                                  ]  36.88kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [=>                                                 ]  73.99kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  febcc8ed0241 Downloading [>                                                  ]  107.5kB/10.38MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [==>                                                ]    148kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [====>                                              ]  327.7kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  febcc8ed0241 Downloading [=>                                                 ]  214.1kB/10.38MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [=======>                                           ]  573.4kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  febcc8ed0241 Downloading [=>                                                 ]  332.5kB/10.38MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [==========>                                        ]    770kB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  febcc8ed0241 Downloading [==>                                                ]  561.9kB/10.38MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [===============>                                   ]  1.114MB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  febcc8ed0241 Downloading [====>                                              ]  905.9kB/10.38MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [======================>                            ]  1.606MB/3.591MB
+2024-11-20 11:13:38,104 - ERROR - amule -  4edfc05e3af2 Downloading [===========================>                       ]   1.95MB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [=====>                                             ]  1.135MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Downloading [======================================>            ]  2.785MB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [========>                                          ]  1.709MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Download complete 
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Extracting [>                                                  ]  65.54kB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [==============>                                    ]  3.077MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Extracting [===>                                               ]  262.1kB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [===================>                               ]  3.994MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Extracting [==================================================>]  3.591MB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Extracting [==================================================>]  3.591MB/3.591MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [=====================>                             ]  4.449MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  4edfc05e3af2 Pull complete 
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [============================>                      ]   5.94MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [====================================>              ]   7.66MB/10.38MB
+2024-11-20 11:13:38,105 - ERROR - amule -  febcc8ed0241 Downloading [==========================================>        ]  8.803MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Downloading [============================================>      ]  9.147MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Downloading [==============================================>    ]  9.606MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Verifying Checksum 
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Download complete 
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Extracting [>                                                  ]  131.1kB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Extracting [==========>                                        ]  2.228MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Extracting [====================================>              ]  7.602MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Extracting [==================================================>]  10.38MB/10.38MB
+2024-11-20 11:13:38,106 - ERROR - amule -  febcc8ed0241 Pull complete 
+2024-11-20 11:13:38,106 - ERROR - amule -  346438061780 Downloading [>                                                  ]  8.363kB/725.6kB
+2024-11-20 11:13:38,106 - ERROR - amule -  1121e356d2f3 Downloading [>                                                  ]  12.32kB/1.103MB
+2024-11-20 11:13:38,106 - ERROR - amule -  346438061780 Downloading [====>                                              ]  68.65kB/725.6kB
+2024-11-20 11:13:38,106 - ERROR - amule -  1121e356d2f3 Downloading [==>                                                ]  63.13kB/1.103MB
+2024-11-20 11:13:38,106 - ERROR - amule -  346438061780 Downloading [========>                                          ]  126.8kB/725.6kB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Downloading [=====>                                             ]  127.4kB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Downloading [======================>                            ]  326.6kB/725.6kB
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Verifying Checksum 
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Download complete 
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Downloading [==============>                                    ]    324kB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Downloading [==================================>                ]  766.3kB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Download complete 
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Extracting [=>                                                 ]  32.77kB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Extracting [==================================================>]  1.103MB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Extracting [==================================================>]  1.103MB/1.103MB
+2024-11-20 11:13:38,107 - ERROR - amule -  1121e356d2f3 Pull complete 
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Extracting [==>                                                ]  32.77kB/725.6kB
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Extracting [==================================================>]  725.6kB/725.6kB
+2024-11-20 11:13:38,107 - ERROR - amule -  346438061780 Pull complete 
+2024-11-20 11:13:38,108 - ERROR - amule -  4f4fb700ef54 Downloading [==================================================>]      32B/32B
+2024-11-20 11:13:38,108 - ERROR - amule -  4f4fb700ef54 Verifying Checksum 
+2024-11-20 11:13:38,108 - ERROR - amule -  4f4fb700ef54 Download complete 
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Downloading [>                                                  ]     158B/9.206kB
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Downloading [==================================================>]  9.206kB/9.206kB
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Verifying Checksum 
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Download complete 
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Extracting [==================================================>]  9.206kB/9.206kB
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Extracting [==================================================>]  9.206kB/9.206kB
+2024-11-20 11:13:38,108 - ERROR - amule -  3cac94a0c501 Downloading [=>                                                 ]     148B/3.99kB
+2024-11-20 11:13:38,108 - ERROR - amule -  3cac94a0c501 Downloading [==================================================>]   3.99kB/3.99kB
+2024-11-20 11:13:38,108 - ERROR - amule -  3cac94a0c501 Verifying Checksum 
+2024-11-20 11:13:38,108 - ERROR - amule -  3cac94a0c501 Download complete 
+2024-11-20 11:13:38,108 - ERROR - amule -  9eab4bbfd1ab Pull complete 
+2024-11-20 11:13:38,108 - ERROR - amule -  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+2024-11-20 11:13:38,108 - ERROR - amule -  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+2024-11-20 11:13:38,109 - ERROR - amule -  4f4fb700ef54 Pull complete 
+2024-11-20 11:13:38,109 - ERROR - amule -  3cac94a0c501 Extracting [==================================================>]   3.99kB/3.99kB
+2024-11-20 11:13:38,109 - ERROR - amule -  3cac94a0c501 Extracting [==================================================>]   3.99kB/3.99kB
+2024-11-20 11:13:38,109 - ERROR - amule -  3cac94a0c501 Pull complete 
+2024-11-20 11:13:38,109 - ERROR - amule -  amule Pulled 
+2024-11-20 11:13:38,109 - ERROR - amule -  Network amule_default  Creating
+2024-11-20 11:13:38,109 - ERROR - amule -  Network amule_default  Created
+2024-11-20 11:13:38,109 - ERROR - amule -  Container amule  Creating
+2024-11-20 11:13:38,109 - ERROR - amule -  Container amule  Created
+2024-11-20 11:13:38,109 - ERROR - amule -  Container amule  Starting
+2024-11-20 11:13:38,109 - ERROR - amule -  Container amule  Started
+2024-11-20 11:13:38,109 - INFO - deploy_up - amule - 项目up成功
+2024-11-20 11:13:38,110 - INFO - Executing command for arcadia: docker compose up -d
+2024-11-20 11:13:38,466 - ERROR - arcadia - Container arcadia  Creating
+2024-11-20 11:13:38,466 - ERROR - arcadia -  Container arcadia  Created
+2024-11-20 11:13:38,466 - ERROR - arcadia -  Container arcadia  Starting
+2024-11-20 11:13:38,466 - ERROR - arcadia -  Container arcadia  Started
+2024-11-20 11:13:38,466 - INFO - deploy_up - arcadia - 项目up成功
+2024-11-20 11:13:38,481 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:13:45,609 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:14:51,154 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:14:58,221 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:15:00,427 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:15:07,697 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:15:08,854 - INFO - Executing command for amule: docker compose down
+2024-11-20 11:15:20,791 - ERROR - amule - Container amule  Stopping
+2024-11-20 11:15:20,791 - ERROR - amule -  Container amule  Stopped
+2024-11-20 11:15:20,791 - ERROR - amule -  Container amule  Removing
+2024-11-20 11:15:20,792 - ERROR - amule -  Container amule  Removed
+2024-11-20 11:15:20,792 - ERROR - amule -  Network amule_default  Removing
+2024-11-20 11:15:20,792 - ERROR - amule -  Network amule_default  Removed
+2024-11-20 11:15:20,792 - INFO - deploy_down - amule - 项目down成功
+2024-11-20 11:15:20,792 - INFO - Executing command for arcadia: docker compose down
+2024-11-20 11:15:31,188 - ERROR - arcadia - Container arcadia  Stopping
+2024-11-20 11:15:31,188 - ERROR - arcadia -  Container arcadia  Stopped
+2024-11-20 11:15:31,188 - ERROR - arcadia -  Container arcadia  Removing
+2024-11-20 11:15:31,188 - ERROR - arcadia -  Container arcadia  Removed
+2024-11-20 11:15:31,189 - INFO - deploy_down - arcadia - 项目down成功
+2024-11-20 11:15:31,203 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:15:38,263 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:20:43,996 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:20:50,836 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:20:52,936 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:20:59,666 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:21:14,371 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:21:21,069 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:21:23,007 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:21:29,725 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:21:51,041 - INFO - Executing command for amule: docker compose up -d
+2024-11-20 11:21:54,037 - ERROR - amule - Network amule_default  Creating
+2024-11-20 11:21:54,037 - ERROR - amule -  Network amule_default  Created
+2024-11-20 11:21:54,037 - ERROR - amule -  Container amule  Creating
+2024-11-20 11:21:54,037 - ERROR - amule -  Container amule  Created
+2024-11-20 11:21:54,037 - ERROR - amule -  Container amule  Starting
+2024-11-20 11:21:54,037 - ERROR - amule -  Container amule  Started
+2024-11-20 11:21:54,037 - INFO - deploy_up - amule - 项目up成功
+2024-11-20 11:21:54,055 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:22:00,853 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:22:04,208 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:22:11,004 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:22:13,061 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:22:19,773 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:22:23,542 - INFO - Executing command for amule: docker compose down
+2024-11-20 11:22:35,919 - ERROR - amule - Container amule  Stopping
+2024-11-20 11:22:35,919 - ERROR - amule -  Container amule  Stopped
+2024-11-20 11:22:35,919 - ERROR - amule -  Container amule  Removing
+2024-11-20 11:22:35,919 - ERROR - amule -  Container amule  Removed
+2024-11-20 11:22:35,919 - ERROR - amule -  Network amule_default  Removing
+2024-11-20 11:22:35,920 - ERROR - amule -  Network amule_default  Removed
+2024-11-20 11:22:35,920 - INFO - deploy_down - amule - 项目down成功
+2024-11-20 11:22:35,934 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:22:42,657 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:22:45,560 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:22:52,282 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:22:54,313 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:23:00,163 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:23:01,440 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:23:07,241 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:23:09,367 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:23:16,073 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:25:30,124 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:25:36,880 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:25:38,887 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:25:45,555 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:33:07,537 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:33:14,243 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:33:16,290 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:33:22,961 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:34:13,276 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:34:19,979 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:34:22,073 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:34:28,781 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:41:33,766 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:41:40,481 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 11:41:42,356 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 11:41:49,083 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:12:24,846 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:12:31,863 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:18:26,362 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:18:33,464 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:25:52,354 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:25:59,644 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:26:02,346 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:26:08,615 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:26:10,692 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:26:17,045 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:26:19,859 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:26:27,823 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:26:56,686 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:27:03,881 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:27:05,977 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:27:13,119 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:39:31,369 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:39:38,392 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:39:38,471 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:39:45,615 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:39:47,667 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:39:54,743 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:42:09,935 - INFO - create_project - dockge2 - 项目创建成功
+2024-11-20 12:42:13,066 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:42:20,178 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 12:42:22,523 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 12:42:29,611 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:34:55,621 - INFO - create_project - dd - 项目创建成功
+2024-11-20 13:34:58,960 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:35:06,310 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:35:12,485 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:35:19,696 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:55:22,156 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:55:29,236 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:55:33,144 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:55:40,250 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:58:49,196 - INFO - create_project - ddd - 项目创建成功
+2024-11-20 13:58:52,510 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:58:59,639 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:59:04,029 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:59:11,143 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:59:35,785 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:59:41,383 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 13:59:42,944 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:59:48,710 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 13:59:53,117 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:00:00,218 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:00:12,309 - ERROR - Error creating project: expected string or bytes-like object
+2024-11-20 14:00:35,312 - INFO - create_project - aa - 项目创建成功
+2024-11-20 14:00:38,614 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:00:45,736 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:00:50,378 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:00:56,782 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:00:57,519 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:01:04,089 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:01:08,836 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:01:15,945 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:11:03,167 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:11:10,301 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:11:14,534 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:11:21,638 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:15:39,714 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:15:46,823 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:15:50,550 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:15:57,637 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:19:08,705 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:19:15,810 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:19:19,661 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:20:06,483 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:20:13,596 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:25:45,579 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:25:52,711 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:25:57,022 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:26:04,128 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:26:10,941 - INFO - create_project - aa - 项目创建成功
+2024-11-20 14:26:14,503 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:26:21,647 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:26:26,044 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:26:33,187 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:26:37,692 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:26:44,800 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:26:48,605 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:26:55,709 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:33:53,181 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:34:00,315 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:34:04,512 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:34:11,644 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:51:41,952 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:51:49,367 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:51:53,485 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:52:00,607 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:52:56,093 - INFO - create_project - dd - 项目创建成功
+2024-11-20 14:52:59,649 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:53:06,828 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:53:10,834 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:53:17,953 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:53:27,585 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:53:34,748 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 14:53:38,332 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 14:53:45,496 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:00:20,390 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:00:27,512 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:00:31,193 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:00:38,290 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:07:15,642 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:07:22,712 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:07:26,620 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:07:33,728 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:14:57,251 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:15:04,354 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:15:08,431 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:15:15,458 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:15:39,823 - INFO - create_project - aa - 项目创建成功
+2024-11-20 15:15:43,378 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:15:50,412 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:15:55,172 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:16:02,211 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:16:04,206 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:16:11,233 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:16:17,409 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:16:24,441 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:18:26,372 - INFO - Scanning compose projects in /mnt/nas/docker/aipan
+2024-11-20 15:18:26,640 - INFO - Scanning compose projects in /mnt/nas/docker/aipan
+2024-11-20 15:18:40,321 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:18:47,373 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:18:51,651 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:18:58,689 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:37:30,963 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:37:38,045 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:37:42,439 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:37:49,569 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:48:13,496 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:48:20,536 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:48:24,402 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:48:31,536 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:48:40,199 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:48:47,333 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
+2024-11-20 15:48:49,935 - INFO - Scanning compose projects in /mnt/nas/docker
+2024-11-20 15:48:56,987 - ERROR - Error reading compose file /mnt/nas/docker/omnivore/docker-compose.yml: 'NoneType' object has no attribute 'get'
